@@ -1,0 +1,41 @@
+﻿@* @model List<Url>; *@
+
+@{
+    var currentDateTime = DateTime.UtcNow;
+
+   // var allUrls = ViewData["AllUrls"] as List<string>;
+
+}
+
+@if(TempData["SuccessMessage"] != null)
+{
+    <h3>Success: @TempData["SuccessMessage"].ToString()</h3>
+}
+
+@* <h4>@ViewBag.ShortenedUrl</h4>
+
+@foreach (var url in ViewBag.allUrls)
+{
+    <h3>@url</h3>
+} *@
+
+@* <h4>@ViewData["ShortenedUrl"]</h4>
+
+@foreach(var url in allUrls){
+    <h3>@url</h3>    
+} *@
+
+@* <h4>Welcome to this APP</h4>
+<h4>Example:</h4>
+
+@foreach(var link in @Model)
+{
+    <p>Original link: @link.OriginalLink</p>
+} *@
+
+@* <p>@Model.First().OriginalLink</p> *@
+@* <p>Original link is: @Model.OriginalLink</p>
+<p>Short link is: @Model.ShortLink</p>
+<p>Nr of clicks is: @Model.NrOfClicks</p>
+<p>User is: @Model.UserId</p> *@
+@* <p>@currentDateTime</p> *@
