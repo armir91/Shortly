@@ -19,7 +19,7 @@ namespace Shortly.Client.Controllers
 
         public IActionResult LoginSubmitted(LoginVM loginVM)
         {
-            return View();
+            return RedirectToAction("Index", "Home");
         }
 
         public IActionResult Register()
