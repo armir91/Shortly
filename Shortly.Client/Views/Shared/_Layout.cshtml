@@ -20,14 +20,42 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link text-dark" 
+                                asp-area="" 
+                                asp-controller="Home" 
+                                asp-action="Index">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark"
+                               asp-area=""
+                               asp-controller="Url"
+                               asp-action="Index">All links</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark"
+                               asp-area=""
+                               asp-controller="Authentication"
+                               asp-action="Users">Users</a>
                         </li>
                     </ul>
                 </div>
+                <a class="btn btn-outline-success my-2 my-sm-0 btn-login"
+                   asp-controller="Authentication"
+                   asp-action="Login">
+                   Log in
+               </a>
+
+               <span id="spaceSpan"></span>
+
+                <a class="btn btn-outline-success my-2 my-sm-0 btn-register"
+                   asp-controller="Authentication"
+                   asp-action="Register">
+                    Register
+                </a>
             </div>
         </nav>
     </header>
-    <div class="container">
+    <div>
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
@@ -35,7 +63,11 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2024 - Shortly.Client - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            <span class="mb-3 mb-md-0 text-muted">
+                <a href="#" class="text-muted">
+                    Shortly - All Rights Reserved!
+                </a>
+            </span>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
