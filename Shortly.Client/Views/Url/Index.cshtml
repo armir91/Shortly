@@ -1,41 +1,43 @@
-﻿@* @model List<Url>; *@
-
-@{
-    var currentDateTime = DateTime.UtcNow;
-
-   // var allUrls = ViewData["AllUrls"] as List<string>;
-
+﻿@{
+    ViewData["Title"] = "All short links";
 }
 
-@if(TempData["SuccessMessage"] != null)
-{
-    <h3>Success: @TempData["SuccessMessage"].ToString()</h3>
-}
+<div class="container">
+    <a class="btn btn-outline-success"
+        asp-controller="Home"
+        asp-action="Index">
+        Add New Link
+    </a>
+</div>
 
-@* <h4>@ViewBag.ShortenedUrl</h4>
-
-@foreach (var url in ViewBag.allUrls)
-{
-    <h3>@url</h3>
-} *@
-
-@* <h4>@ViewData["ShortenedUrl"]</h4>
-
-@foreach(var url in allUrls){
-    <h3>@url</h3>    
-} *@
-
-@* <h4>Welcome to this APP</h4>
-<h4>Example:</h4>
-
-@foreach(var link in @Model)
-{
-    <p>Original link: @link.OriginalLink</p>
-} *@
-
-@* <p>@Model.First().OriginalLink</p> *@
-@* <p>Original link is: @Model.OriginalLink</p>
-<p>Short link is: @Model.ShortLink</p>
-<p>Nr of clicks is: @Model.NrOfClicks</p>
-<p>User is: @Model.UserId</p> *@
-@* <p>@currentDateTime</p> *@
+<div class="container">
+    <table class="table table-stripped">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Original link</th>
+                <th scope="col">Shortened link</th>
+                <th scope="col">NUmber of Clicks</th>
+                <th scope="col">User</th>
+                <th scope="col">Options</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1</td>
+                <td>https://original.com</td>
+                <td>ertr</td>
+                <td>3</td>
+                <td>Ervis</td>
+                <td>
+                    <a 
+                        class="btn btn-outline-danger" 
+                        asp-controller="Url" 
+                        asp-action="Remove">
+                        Remove
+                    </a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
