@@ -12,34 +12,34 @@ namespace Shortly.Data.Services
             _context = context;
         }
 
-        public Url GetById(int id)
+        public async Task<Url> GetByIdAsync(int id)
         {
-            var url = _context.Urls.FirstOrDefault(x => x.Id == id);
+            var url = await _context.Urls.FirstOrDefaultAsync(x => x.Id == id);
 
             return url;
         }
 
-        public List<Url> GetUrls()
+        public async Task<List<Url>> GetUrlsAsync()
         {
-            var allUrls = _context
+            var allUrls = await _context
                 .Urls
                 .Include(user => user.User)
-                .ToList();
+                .ToListAsync();
 
             return allUrls;
         }
 
-        public Url Add(Url url)
+        public async Task<Url> AddAsync(Url url)
         {
-            _context.Urls.Add(url);
-            _context.SaveChanges();
+            await _context.Urls.AddAsync(url);
+            await _context.SaveChangesAsync();
 
             return url;
         }
 
-        public Url Update(int id, Url url)
+        public async Task<Url> UpdateAsync(int id, Url url)
         {
-            var urlDb = _context.Urls.FirstOrDefault(x => x.Id == id);
+            var urlDb = await _context.Urls.FirstOrDefaultAsync(x => x.Id == id);
             if (urlDb != null)
             {
                 urlDb.OriginalLink = url.OriginalLink;
@@ -47,19 +47,19 @@ namespace Shortly.Data.Services
                 urlDb.DateUpdated = url.DateUpdated;
 
                 _context.Update(urlDb);
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
             }
 
             return urlDb;
         }
 
-        public void Delete(int id)
+        public async Task DeleteAsync(int id)
         {
-            var urlDb = _context.Urls.FirstOrDefault(x => x.Id == id);
+            var urlDb = await _context.Urls.FirstOrDefaultAsync(x => x.Id == id);
             if (urlDb != null)
             {
                 _context.Urls.Remove(urlDb);
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
             }
         }
     }

@@ -19,10 +19,10 @@ namespace Shortly.Client.Controllers
             _mapper = mapper;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
 
-            var urls = _urlsService.GetUrls();
+            var urls = await _urlsService.GetUrlsAsync();
 
             /*.Select(url => new GetUrlVM()
                 {
@@ -45,14 +45,14 @@ namespace Shortly.Client.Controllers
             return View(mappedAllUrls);
         }
 
-        public IActionResult Create()
+        public async Task<IActionResult> CreateAsync()
         {
             return RedirectToAction("Index");
         }
 
-        public IActionResult Remove(int id) 
+        public async Task<IActionResult> RemoveAsync(int id) 
         {
-            _urlsService.Delete(id);
+            await _urlsService.DeleteAsync(id);
 
                 /*.Urls
                 .FirstOrDefault(url => url.Id == id);*/
