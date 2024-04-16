@@ -16,7 +16,7 @@
     <table class="table table-stripped">
         <thead>
             <tr>
-                <th scope="col">#</th>
+                <th scope="col">Link Id</th>
                 <th scope="col">Original link</th>
                 <th scope="col">Shortened link</th>
                 <th scope="col">NUmber of Clicks</th>
@@ -32,7 +32,7 @@
                     <td>@url.OriginalLink</td>
                     <td>@url.ShortLink</td>
                     <td>@url.NrOfClicks</td>
-                    <td>@url.UserId</td>
+                    <td>@(url.User != null ? url.User.FullName : "-")</td>
                     <td>
                         <a class="btn btn-outline-danger"
                            asp-controller="Url"
