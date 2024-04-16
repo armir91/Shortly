@@ -1,11 +1,14 @@
 using Microsoft.EntityFrameworkCore;
 using Shortly.Client.Data;
 using Shortly.Data;
+using Shortly.Data.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddScoped<IUrlsService, UrlsService>();
 
 //Configure the AppDbContext
 builder.Services.AddDbContext<AppDbContext>(options =>

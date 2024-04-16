@@ -2,38 +2,38 @@
 using Microsoft.EntityFrameworkCore;
 using Shortly.Client.Data.ViewModels;
 using Shortly.Data;
+using Shortly.Data.Services;
 
 namespace Shortly.Client.Controllers
 {
     public class UrlController : Controller
     {
-        private readonly AppDbContext _context;
+        private readonly IUrlsService _urlsService;
 
-        public UrlController(AppDbContext context)
+        public UrlController(IUrlsService urlsService)
         {
-            _context = context;
+            _urlsService = urlsService;
         }
 
         public IActionResult Index()
         {
 
-            var urls = _context
-                .Urls
-                .Include(user => user.User)
+            var urls = _urlsService
+                .GetUrls()
                 .Select(url => new GetUrlVM()
-                    {
-                        Id = url.Id,
-                        OriginalLink = url.OriginalLink,
-                        ShortLink = url.ShortLink,
-                        NrOfClicks = url.NrOfClicks,
-                        UserId = url.UserId,
+                {
+                    Id = url.Id,
+                    OriginalLink = url.OriginalLink,
+                    ShortLink = url.ShortLink,
+                    NrOfClicks = url.NrOfClicks,
+                    UserId = url.UserId,
 
-                        User = url.User != null ? new GetUserVM()
-                        {
-                            Id = url.User.Id,
-                            FullName = url.User.FullName
-                        } : null
-                    })
+                    User = url.User != null ? new GetUserVM()
+                    {
+                        Id = url.User.Id,
+                        FullName = url.User.FullName
+                    } : null
+                })
                 .ToList();
 
             return View(urls);
@@ -46,9 +46,12 @@ namespace Shortly.Client.Controllers
 
         public IActionResult Remove(int id) 
         {
-            var url = _context.Urls.FirstOrDefault(url => url.Id == id);
-            _context.Urls.Remove(url);
-            _context.SaveChanges();
+            _urlsService.Delete(id);
+
+                /*.Urls
+                .FirstOrDefault(url => url.Id == id);*/
+                /*_urlsService.Urls.Remove(url);*/
+                /*_urlsService.SaveChanges();*/
 
             return RedirectToAction("Index");
         }
