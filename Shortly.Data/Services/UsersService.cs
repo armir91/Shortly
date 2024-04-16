@@ -17,53 +17,53 @@ namespace Shortly.Data.Services
             _context = context;
         }
 
-        public User GetById(int id)
+        public async Task<User> GetByIdAsync(int id)
         {
-            var user = _context.Users.FirstOrDefault(x => x.Id == id);
+            var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == id);
 
             return user;
         }
 
-        public List<User> GetUsers()
+        public async Task<List<User>> GetUsersAsync()
         {
-            var allUSers = _context
+            var allUSers = await _context
                 .Users
                 .Include(url => url.Urls)
-                .ToList();
+                .ToListAsync();
 
             return allUSers;
         }
 
-        public User Add(User user)
+        public async Task<User> AddAsync(User user)
         {
-            _context.Users.Add(user);
-            _context.SaveChanges();
+            await _context.Users.AddAsync(user);
+            await _context.SaveChangesAsync();
 
             return user;
         }
 
-        public User Update(int id, User user)
+        public async Task<User> UpdateAsync(int id, User user)
         {
-            var userDb = _context.Users.FirstOrDefault(x => x.Id == id);
+            var userDb = await _context.Users.FirstOrDefaultAsync(x => x.Id == id);
             if (userDb != null)
             {
                 userDb.Email = user.Email;
                 userDb.FullName = user.FullName;
 
                 _context.Update(userDb);
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
             }
 
             return userDb;
         }
 
-        public void Delete(int id)
+        public async Task DeleteAsync(int id)
         {
-            var userDb = _context.Users.FirstOrDefault(x => x.Id == id);
+            var userDb = await _context.Users.FirstOrDefaultAsync(x => x.Id == id);
             if (userDb != null)
             {
                 _context.Users.Remove(userDb);
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
             }
         }
     }
