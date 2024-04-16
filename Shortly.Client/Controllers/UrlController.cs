@@ -16,7 +16,8 @@ namespace Shortly.Client.Controllers
         public IActionResult Index()
         {
 
-            var urls = _context.Urls
+            var urls = _context
+                .Urls
                 .Select(url => new GetUrlVM()
                     {
                         Id = url.Id,
