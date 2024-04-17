@@ -12,7 +12,7 @@ namespace Shortly.Client.Data
 
                 if(!dbContext.Users.Any())
                 {
-                    dbContext.Users.AddRange(new Shortly.Data.Models.User()
+                    dbContext.Users.AddRange(new Shortly.Data.Models.AppUser()
                     {
                         FullName = "Armir Keta",
                         Email = "armir.keta@gmail.com"
