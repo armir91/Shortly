@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Shortly.Client.Data.Helpers.Roles;
 using Shortly.Client.Data.ViewModels;
 using Shortly.Data;
 using Shortly.Data.Models;
 using Shortly.Data.Services;
+using System.Security.Claims;
 
 namespace Shortly.Client.Controllers
 {
@@ -21,24 +23,10 @@ namespace Shortly.Client.Controllers
 
         public async Task<IActionResult> Index()
         {
+            var loggedInUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var isAdmin = User.IsInRole(Role.Admin);
 
-            var urls = await _urlsService.GetUrlsAsync();
-
-            /*.Select(url => new GetUrlVM()
-                {
-                    Id = url.Id,
-                    OriginalLink = url.OriginalLink,
-                    ShortLink = url.ShortLink,
-                    NrOfClicks = url.NrOfClicks,
-                    UserId = url.UserId,
-
-                    User = url.User != null ? new GetUserVM()
-                    {
-                        Id = url.User.Id,
-                        FullName = url.User.FullName
-                    } : null
-                })
-                .ToList();*/
+            var urls = await _urlsService.GetUrlsAsync(loggedInUserId, isAdmin);
 
             var mappedAllUrls = _mapper.Map<List<GetUrlVM>>(urls);
 
@@ -53,12 +41,6 @@ namespace Shortly.Client.Controllers
         public async Task<IActionResult> RemoveAsync(int id) 
         {
             await _urlsService.DeleteAsync(id);
-
-                /*.Urls
-                .FirstOrDefault(url => url.Id == id);*/
-                /*_urlsService.Urls.Remove(url);*/
-                /*_urlsService.SaveChanges();*/
-
             return RedirectToAction("Index");
         }
     }

@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Shortly.Client.Data.ViewModels;
 using Shortly.Data;
 using Shortly.Data.Models;
+using System.Security.Claims;
 
 namespace Shortly.Client.Controllers
 {
@@ -25,14 +26,17 @@ namespace Shortly.Client.Controllers
         public IActionResult ShortenUrl(PostUrlVM postUrlVM)
         {
            // validate the model
-           if(!ModelState.IsValid) return View("Index", postUrlVM);
+           if(!ModelState.IsValid) 
+                return View("Index", postUrlVM);
+
+            var loggedInUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
             var newUrl = new Url()
             {
                OriginalLink = postUrlVM.Url,
                ShortLink = GenerateShortUrl(3),
                NrOfClicks = 0,
-               UserId = null,
+               UserId = loggedInUserId,
                DateCreated = DateTime.UtcNow
             };
 

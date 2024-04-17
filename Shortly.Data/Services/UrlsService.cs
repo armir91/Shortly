@@ -19,14 +19,23 @@ namespace Shortly.Data.Services
             return url;
         }
 
-        public async Task<List<Url>> GetUrlsAsync()
+        public async Task<List<Url>> GetUrlsAsync(string userId, bool isAdmin)
         {
-            var allUrls = await _context
+            var Query = _context
                 .Urls
-                .Include(user => user.User)
-                .ToListAsync();
+                .Include(user => user.User);
 
-            return allUrls;
+            if (isAdmin)
+            {
+                return await Query
+                    .ToListAsync();
+            }
+            else
+            {
+                return await Query
+                    .Where(x => x.UserId == userId)
+                    .ToListAsync();
+            }
         }
 
         public async Task<Url> AddAsync(Url url)
