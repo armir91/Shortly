@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Shortly.Client.Data.Helpers.Roles;
 using Shortly.Client.Data.ViewModels;
 using Shortly.Data;
 using Shortly.Data.Models;
@@ -73,7 +74,24 @@ namespace Shortly.Client.Controllers
 
         public async Task<IActionResult> RegisterUser(RegisterVM registerVM)
         {
-            if (!ModelState.IsValid) return View("Register", registerVM);
+            if (!ModelState.IsValid) 
+                return View("Register", registerVM);
+
+            var newUser = new AppUser()
+            {
+                Email = registerVM.EmailAddress,
+                UserName = registerVM.EmailAddress,
+                FullName = registerVM.FullName
+            };
+
+            var userCreated = await _userManager.CreateAsync(newUser, registerVM.Password);
+            if(userCreated.Succeeded)
+            {
+                await _userManager.AddToRoleAsync(newUser, Role.User);
+
+                // Sign in the new user
+                await _signInManager.PasswordSignInAsync(newUser, registerVM.Password, false, false);
+            }
 
             return RedirectToAction("Index", "Home");
         }

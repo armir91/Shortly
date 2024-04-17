@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Shortly.Client.Data.Helpers.Roles;
 using Shortly.Data;
 using Shortly.Data.Models;
 
@@ -49,7 +50,7 @@ namespace Shortly.Client.Data
 
                 //Simple User related data
 
-                var simpleUserRole = "User";
+                var simpleUserRole = Role.User;
                 var simpleUserEmail = "user@shortly.com";
                 if (!await roleManager.RoleExistsAsync(simpleUserRole))
                     await roleManager.CreateAsync(new IdentityRole()
@@ -77,7 +78,7 @@ namespace Shortly.Client.Data
 
                 //Admin user related data
 
-                var adminUserRole = "Admin";
+                var adminUserRole = Role.Admin;
                 var adminUserEmail = "admin@shortly.com";
                 if (!await roleManager.RoleExistsAsync(adminUserRole))
                     await roleManager.CreateAsync(new IdentityRole()
