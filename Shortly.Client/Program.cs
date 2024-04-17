@@ -31,6 +31,16 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.SlidingExpiration = true;
 });
 
+//3.Update defaukt password configurations
+builder.Services.Configure<IdentityOptions>(options =>
+{
+    options.Password.RequireDigit = false;
+    options.Password.RequireLowercase = false;
+    options.Password.RequireUppercase = false;
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequiredLength = 5;
+});
+
 builder.Services.AddScoped<IUrlsService, UrlsService>();
 builder.Services.AddScoped<IUsersService, UsersService>();
 
