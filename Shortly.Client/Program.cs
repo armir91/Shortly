@@ -44,6 +44,9 @@ builder.Services.Configure<IdentityOptions>(options =>
     //account lockout
     options.Lockout.AllowedForNewUsers = true;
     options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(10);
+
+    //Sign in settings
+    options.SignIn.RequireConfirmedEmail = true;
 });
 
 builder.Services.AddScoped<IUrlsService, UrlsService>();
