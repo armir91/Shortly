@@ -61,6 +61,19 @@ namespace Shortly.Client.Controllers
                         return View("Login", loginVM);
                     }
 
+                } 
+                else
+                {
+                    await _userManager.AccessFailedAsync(user);
+
+                    if (await _userManager.IsLockedOutAsync(user))
+                    {
+                        ModelState.AddModelError("", "Your account is locked! Please try again after 10 minutes!");
+                        return View("Login", loginVM);
+                    }
+
+                    ModelState.AddModelError("", "Invalid login attempt! PLease verify your e-mail and password!");
+                    return View("Login", loginVM);
                 }
             }
 
@@ -89,7 +102,8 @@ namespace Shortly.Client.Controllers
             {
                 Email = registerVM.EmailAddress,
                 UserName = registerVM.EmailAddress,
-                FullName = registerVM.FullName
+                FullName = registerVM.FullName,
+                LockoutEnabled = true
             };
 
             var userCreated = await _userManager.CreateAsync(newUser, registerVM.Password);
