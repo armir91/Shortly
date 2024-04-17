@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Shortly.Client.Data.ViewModels;
 using Shortly.Data;
+using Shortly.Data.Models;
 using Shortly.Data.Services;
 
 namespace Shortly.Client.Controllers
@@ -9,10 +11,14 @@ namespace Shortly.Client.Controllers
     public class AuthenticationController : Controller
     {
         private readonly IUsersService _usersService;
+        private readonly SignInManager<AppUser> _signInManager;
+        private readonly UserManager<AppUser> _userManager;
 
-        public AuthenticationController(IUsersService usersService)
+        public AuthenticationController(IUsersService usersService, SignInManager<AppUser> signInManager, UserManager<AppUser> userManager)
         {
             _usersService = usersService;
+            _signInManager = signInManager;
+            _userManager = userManager;
         }
 
         public async Task<IActionResult> Users()
@@ -32,7 +38,30 @@ namespace Shortly.Client.Controllers
 
         public async Task<IActionResult> LoginSubmitted(LoginVM loginVM)
         {
-            if(!ModelState.IsValid) return View("Login", loginVM);
+            if(!ModelState.IsValid) 
+                return View("Login", loginVM);
+
+            var user = await _userManager.FindByEmailAsync(loginVM.EmailAddress);
+            if(user != null)
+            {
+                var userPasswordCheck = await _userManager.CheckPasswordAsync(user, loginVM.Password);
+                if (userPasswordCheck)
+                {
+                    var userLoggedIn = await _signInManager.PasswordSignInAsync(user, loginVM.Password, false, false);
+
+                    if (userLoggedIn.Succeeded)
+                    {
+                        return RedirectToAction("Index", "Home");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", "Invalid login attempt! PLease verify your e-mail and password!");
+
+                        return View("Login", loginVM);
+                    }
+
+                }
+            }
 
             return RedirectToAction("Index", "Home");
         }
